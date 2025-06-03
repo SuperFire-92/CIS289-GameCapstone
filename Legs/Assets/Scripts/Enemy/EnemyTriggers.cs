@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class EnemyTriggers : MonoBehaviour
 {
-    /*[NonSerialized]*/ public bool playerInRange;
+    /*[NonSerialized]*/
+    public bool playerInRange;
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,5 +20,10 @@ public class EnemyTriggers : MonoBehaviour
         {
             playerInRange = false;
         }
+    }
+
+    public bool getPlayerInRange()
+    {
+        return playerInRange;
     }
 }

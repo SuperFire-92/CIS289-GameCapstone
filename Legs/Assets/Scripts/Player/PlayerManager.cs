@@ -44,12 +44,20 @@ public class PlayerManager : MonoBehaviour
         inputSystem.FindActionMap("PlayerMovement").Enable();
     }
 
+    void Awake()
+    {
+        //Declare GameStats variables before anything else accesses them
+        GameStats.setPlayer(this.gameObject);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //Set up actions
         declareActions();
+        //Create wheel of swords
         generateSwords(numOfSwords);
+        //Set up variables
         enemiesInRange = new GameObject[0];
     }
 
