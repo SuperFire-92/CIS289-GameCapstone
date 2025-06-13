@@ -7,21 +7,23 @@ public class EnemyManager : MonoBehaviour
 {
     [Header("Enemy Attributes")]
     [SerializeField] public int baseHealth;
+    private int health;
     [SerializeField] public float speed;
 
     [Header("Timers")]
     [Tooltip("Time range in between checks for the player being in vision range (In Milliseconds)")]
     [SerializeField] public Vector2 blinkTimerRange;
-    /**/ [SerializeField] private float blinkTimer;
-    /**/ [SerializeField] private bool playerFound = false;
+    private float blinkTimer;
+    private bool playerFound = false;
     [Tooltip("Time range for the enemy to idle before charging an attack (In Milliseconds)")]
     [SerializeField] public Vector2 attackDelayRange;
-    /**/ [SerializeField] private bool inAttackDelayMode = false;
-    /**/ [SerializeField] private float attackDelayTimer;
+    private bool inAttackDelayMode = false;
+    private float attackDelayTimer;
     [Tooltip("Time for an attack chargeup (In Milliseconds)")]
     [SerializeField] public float attackChargeup;
-    /**/ [SerializeField] private bool inAttackChargeupMode = false;
-    /**/ [SerializeField] private float attackChargeupTimer;
+    private bool inAttackChargeupMode = false;
+    private bool attackingUp = false;
+    private float attackChargeupTimer;
 
     [Header("Attacks")]
     [SerializeField] public bool sideAttackBasic;
@@ -32,8 +34,12 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] public GameObject rightTrigger;
     [SerializeField] public GameObject topTrigger;
     [SerializeField] public GameObject visionTrigger;
+    [SerializeField] public GameObject enemy;
+    [SerializeField] public GameObject deathPrefab;
+    [SerializeField] public GameObject damageCounter;
+    private int damageDirection;
+    private Animator animator;
 
-    private int health;
     private GameObject player;
 
 
@@ -43,6 +49,11 @@ public class EnemyManager : MonoBehaviour
         health = baseHealth;
         blinkTimer = Random.Range(blinkTimerRange.x, blinkTimerRange.y);
         player = GameStats.getPlayer();
+        damageDirection = (int)Mathf.Floor(Random.Range(0, 2.9f));
+
+        //Set up animator
+        animator = GetComponent<Animator>();
+        animator.SetBool("IsWalking", false);
     }
 
     // Update is called once per frame
@@ -57,7 +68,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     //Code related to the movement and behavior of the enemy
-    void enemyAI()
+    private void enemyAI()
     {
         //Keep track of whether or not the player is next to the enemy
         bool playerInRange = false;
@@ -76,12 +87,13 @@ public class EnemyManager : MonoBehaviour
             attackChargeupTimer -= Time.fixedDeltaTime;
 
         //When the player is directly next to the enemy, stop moving and start counting down until an attack
-        if (leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true || rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
+        if (leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true || rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true || topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
         {
             playerInRange = true;
             //If the player just entered OR an attack just ended, switch into attack delay mode. If not, continue past this if statement
             if (inAttackDelayMode == false && inAttackChargeupMode == false)
             {
+                animator.SetBool("IsWalking", false);
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 inAttackDelayMode = true;
                 attackDelayTimer = Random.Range(attackDelayRange.x, attackDelayRange.y);
@@ -97,25 +109,14 @@ public class EnemyManager : MonoBehaviour
         //If attackDelay is just ending, move into attack mode or cancel the attack
         if (inAttackDelayMode == true && attackDelayTimer < 0f && inAttackChargeupMode == false)
         {
-
-            if (playerInRange == true)
-            {
-                //_~! SWITCH INTO CHARGEUP ANIMATION !~_
-                inAttackChargeupMode = true;
-                inAttackDelayMode = false;
-                attackChargeupTimer = attackChargeup;
+            chargeAttack(playerInRange);
+            if (playerInRange)
                 return;
-            }
-            //If the player has left the range, switch out of delay mode without attacking
-            if (playerInRange == false)
-                inAttackDelayMode = false;
         }
         //When the attack chargeup is over, attack
         if (inAttackChargeupMode == true && attackChargeupTimer < 0f)
         {
-            //_~! DEAL DAMAGE TO THE PLAYER !~_
-            inAttackChargeupMode = false;
-            inAttackDelayMode = false; /* Redundancy */
+            attack();
             return;
         }
         //When the player is in the vision range, walk in that direction
@@ -142,8 +143,72 @@ public class EnemyManager : MonoBehaviour
             //Now walk in that direction
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * playerDirection, 0);
+            enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -playerDirection, enemy.transform.localScale.y, enemy.transform.localScale.z);
+            animator.SetBool("IsWalking", true);
             return;
         }
         //IDLING
     }
+
+    private void chargeAttack(bool playerInRange)
+    {
+        if (playerInRange)
+        {
+            //Switch into chargeup animation
+            if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && verticalAttackBasic)
+            {
+                animator.SetTrigger("UpwardCharge");
+                attackingUp = true;
+            }
+            else if (sideAttackBasic)
+            {
+                animator.SetTrigger("ForwardCharge");
+                attackingUp = false;
+            }
+            //Start counting down until the attack
+            inAttackChargeupMode = true;
+            inAttackDelayMode = false;
+            attackChargeupTimer = attackChargeup;
+            return;
+        }
+        //If the player has left the range, switch out of delay mode without attacking
+        else
+            inAttackDelayMode = false;
+    }
+
+    private void attack()
+    {
+        //Deal damage to player and animate the attack
+        if (attackingUp)
+        {
+            animator.SetTrigger("UpwardAttack");
+            if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
+            {
+                GameStats.getPlayer();
+            }
+        }
+        else
+        {
+            animator.SetTrigger("ForwardAttack");
+        }
+        inAttackChargeupMode = false;
+        inAttackDelayMode = false; /* Redundancy */
+        return;
+    }
+
+    public void takeDamage(int d)
+    {
+        health -= d;
+        GameObject dam = Instantiate(damageCounter, new Vector2(transform.position.x, transform.position.y + (GetComponent<BoxCollider2D>().size.y + 0.5f)), new Quaternion());
+        dam.GetComponent<DamageCounter>().setupDamage(damageDirection);
+        damageDirection = damageDirection >= 2 ? 0 : damageDirection + 1;
+        if (health <= 0)
+        {
+            Debug.Log("I died lol");
+            Instantiate(deathPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion());
+            Destroy(gameObject);
+        }
+    }
+
+    
 }

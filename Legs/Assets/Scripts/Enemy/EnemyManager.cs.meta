@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 3dc7e84a2fa8dcd408dbb667922387c6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - leftTrigger: {instanceID: 0}
+  - rightTrigger: {instanceID: 0}
+  - topTrigger: {instanceID: 0}
+  - visionTrigger: {instanceID: 0}
+  - enemy: {instanceID: 0}
+  - deathPrefab: {instanceID: 0}
+  - damageCounter: {fileID: 8401697337498427896, guid: 0d9b118100f7bf140be1dade75ae2950, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

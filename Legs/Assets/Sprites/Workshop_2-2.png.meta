@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 40d495e0e6330844ca8010d466a5bf86
+guid: 82281383cb4dfa5489b7153012eb9cca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2311659948842064771
-    second: Player_0
+      213: 3462293135991272477
+    second: Workshop_2-2_0
+  - first:
+      213: -3281328188884040858
+    second: Workshop_2-2_1
+  - first:
+      213: -396403166210971269
+    second: Workshop_2-2_2
+  - first:
+      213: -4548128063855572580
+    second: Workshop_2-2_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +55,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 8
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_0
+      name: Workshop_2-2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 36
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 20
+        y: 22
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d7465c336855befd0800000000000000
-      internalID: -2311659948842064771
+      spriteID: d14780f53498c0030800000000000000
+      internalID: 3462293135991272477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Workshop_2-2_1
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 42
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 663471eb5616672d0800000000000000
+      internalID: -3281328188884040858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Workshop_2-2_2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 11
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b79a72aab61bf7af0800000000000000
+      internalID: -396403166210971269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Workshop_2-2_3
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 11
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9947e87f9dc1e0c0800000000000000
+      internalID: -4548128063855572580
       vertices: []
       indices: 
       edges: []
@@ -125,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4c78a0076bf13e04db54230855f419dc
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player_0: -2311659948842064771
+      Workshop_2-2_0: 3462293135991272477
+      Workshop_2-2_1: -3281328188884040858
+      Workshop_2-2_2: -396403166210971269
+      Workshop_2-2_3: -4548128063855572580
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 40d495e0e6330844ca8010d466a5bf86
+guid: 463f255dacf30324ca36db7f610c7935
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2311659948842064771
-    second: Player_0
+      213: -8968094812424513759
+    second: Workshop_2-1_0
+  - first:
+      213: -4827255166276746160
+    second: Workshop_2-1_1
+  - first:
+      213: -8962984764073829325
+    second: Workshop_2-1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +52,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 8
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_0
+      name: Workshop_2-1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 36
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1
+        y: 11
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d7465c336855befd0800000000000000
-      internalID: -2311659948842064771
+      spriteID: 127d969784dea8380800000000000000
+      internalID: -8968094812424513759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Workshop_2-1_1
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 22
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 054c7ed8005220db0800000000000000
+      internalID: -4827255166276746160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Workshop_2-1_2
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 11
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33c142258d41d9380800000000000000
+      internalID: -8962984764073829325
       vertices: []
       indices: 
       edges: []
@@ -125,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4c78a0076bf13e04db54230855f419dc
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player_0: -2311659948842064771
+      Workshop_2-1_0: -8968094812424513759
+      Workshop_2-1_1: -4827255166276746160
+      Workshop_2-1_2: -8962984764073829325
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

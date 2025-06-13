@@ -196,8 +196,9 @@ GameObject:
   - component: {fileID: 6542478859508637518}
   - component: {fileID: 3416643895902570212}
   - component: {fileID: 8004700134481345745}
+  - component: {fileID: 2744908699078278349}
   m_Layer: 0
-  m_Name: Enemy1Prototype
+  m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,6 +247,9 @@ MonoBehaviour:
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
   visionTrigger: {fileID: 3421874387951677249}
+  enemy: {fileID: 4632092926328707802}
+  deathPrefab: {fileID: 4947938679309285291, guid: 1512667c72a61d04bb3836a183696cc1, type: 3}
+  damageCounter: {fileID: 8401697337498427896, guid: 0d9b118100f7bf140be1dade75ae2950, type: 3}
 --- !u!50 &3416643895902570212
 Rigidbody2D:
   serializedVersion: 5
@@ -262,7 +266,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bb023099e2c8bbe41a43111e64aa8f7d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -319,6 +323,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.875, y: 2}
   m_EdgeRadius: 0
+--- !u!95 &2744908699078278349
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389987829648881555}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abff22d1e5c976343b440bd409495957, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3421874387951677249
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,12 +503,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: -8324578975113528819, guid: 64d9978f7b65353458c1addce119f5bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1fd1aa86cf0bf0e4f9d52a3c2994dad3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.14, y: 0.32}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
