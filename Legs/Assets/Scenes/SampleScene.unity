@@ -914,10 +914,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c62e0fd52ec20b9408c60a7bc224eb43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemies:
-  - health: 0
-    position: {x: -5, y: 0}
-    enemyGameObject: {fileID: 3389987829648881555, guid: eda81f4de186edc4893b7aa7db96bf42, type: 3}
+  enemiesToSpawn:
+  - {fileID: 0}
+  spawnLocations:
+  - {x: -15, y: 0}
+  - {x: 0, y: 0}
+  - {x: 15, y: 0}
 --- !u!61 &1355343754
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1030,6 +1032,10 @@ PrefabInstance:
     - target: {fileID: 3389987829648881555, guid: 6c41bf9f64cff53488cbcb9fa41ba9a2, type: 3}
       propertyPath: m_Name
       value: Enemy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3389987829648881555, guid: 6c41bf9f64cff53488cbcb9fa41ba9a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

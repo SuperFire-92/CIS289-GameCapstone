@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,15 +8,14 @@ public class BattleZone : MonoBehaviour
     //This variable 
     [NonSerialized] public bool playerInside;
     [NonSerialized] public bool playerEntered;
-    //This will store every enemy that is affiliated with the battlezone, and activate/deactivate them when needed.
-    [System.Serializable]
-    public struct Enemy
-    {
-        public int health;
-        public Vector2 position;
-        public GameObject enemyGameObject;
-    }
-    [SerializeField] private Enemy[] enemies;
+    [SerializeField] private GameObject[] enemiesToSpawn;
+    [Tooltip("A list of locations where enemies can spawn within the BattleZone.\nThe maximum enemies at once is equal to the number of spawn locations.")]
+    [SerializeField] private Vector2[] spawnLocations;
+    //Store lists of enemies and dead enemies to be removed when the player leaves the area or dies.
+    private List<GameObject> currentEnemies = new();
+    private List<GameObject> deadEnemies = new();
+    //A value to keep track of which spawn location goes next
+    int nextSpawnSpot = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,19 +32,18 @@ public class BattleZone : MonoBehaviour
     //Handle the player entering the battle zone and either spawning or reactivating enemies
     public void handlePlayerEntry()
     {
-        //Here we check to see if its the first time that the player has entered the region. If it is, spawn the enemies anew. If it is not, turn the enemy's AI back on.
+        //Spawn the first wave of enemies
         if (playerEntered == false)
         {
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < enemiesToSpawn.Length; i++)
             {
-                if (enemies[i].enemyGameObject == null)
+                if (enemiesToSpawn[i] == null)
                 {
                     Debug.LogWarning("Battlezone Enemy " + i + " Missing Gameobject");
                     continue;
                 }
-                GameObject enemy = Instantiate(enemies[i].enemyGameObject);
-                enemy.transform.position = new Vector2(transform.position.x + enemies[i].position.x, transform.position.y + enemies[i].position.y);
-                // -- ENEMY HEALTH SET HERE --
+                GameObject enemy = Instantiate(enemiesToSpawn[i]);
+                //enemy.transform.position = new Vector2(transform.position.x + enemiesToSpawn[i].position.x, transform.position.y + enemiesToSpawn[i].position.y);
             }
         }
     }
@@ -74,9 +73,9 @@ public class BattleZone : MonoBehaviour
         //Display red circles at every instance of an enemy spawn location
         Gizmos.color = Color.red;
 
-        for (int i = 0; i < enemies.Length; i++)
+        for (int i = 0; i < spawnLocations.Length; i++)
         {
-            Gizmos.DrawSphere(enemies[i].position + new Vector2(transform.position.x, transform.position.y), .2f);
+            Gizmos.DrawSphere(spawnLocations[i] + new Vector2(transform.position.x, transform.position.y), .2f);
         }
     } 
 }

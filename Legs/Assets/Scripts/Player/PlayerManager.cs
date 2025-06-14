@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] public Vector4 cameraLimits;
 
     [Header("References")]
-    
+
     [SerializeField] public GameObject sword;
     [SerializeField] public GameObject wheel;
     [SerializeField] public GameObject player;
@@ -45,6 +45,7 @@ public class PlayerManager : MonoBehaviour
     private float currentAttackSpeed = 0;
     //Keeps track of whether or not the player is at the maximum movement speed
     private bool maxSpeed = false;
+    [SerializeField] private float dragScale = 1;
     [SerializeField] private float damageTimer = 0;
     private float damageCooldown = 0;
 
@@ -135,10 +136,26 @@ public class PlayerManager : MonoBehaviour
         {
             player.transform.localScale = new Vector3(-Math.Abs(player.transform.localScale.x), player.transform.localScale.y, player.transform.localScale.z);
         }
+        
+        //Find out if the player is in the air. If they are, we will reduce their movement speed and drag significantly
+        //For this, we'll do the same check we do to test if the player can jump
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        //Create a list of colliders so that the GetContacts function will work
+        List<Collider2D> newlist = new();
+        if (rb.linearVelocityY > 0.05f || rb.linearVelocityY < -0.05f || rb.GetContacts(newlist) <= 0)
+        {
+            dragScale = 0.1f;
+        }
+        else
+        {
+            dragScale = 1f;
+        }
+
 
         //Increase or decrease currentMovementSpeed for a natural movement feel.
         if (move < 0.1f && move > -0.1f)
         {
+
             //When the user isnt trying to move but is trying to attack, increase the attack speed
             if (attack != 0f)
             {
@@ -164,13 +181,13 @@ public class PlayerManager : MonoBehaviour
             //When the user is not trying to move, reduce or increase the currentMovementSpeed to 0.
             if (currentMovementSpeed > 0f)
             {
-                currentMovementSpeed += -acceleration;
+                currentMovementSpeed += -acceleration * dragScale;
                 if (currentMovementSpeed < 0f)
                     currentMovementSpeed = 0f;
             }
             if (currentMovementSpeed < 0f)
             {
-                currentMovementSpeed += acceleration;
+                currentMovementSpeed += acceleration * dragScale;
                 if (currentMovementSpeed > 0f)
                     currentMovementSpeed = 0f;
             }
@@ -219,7 +236,7 @@ public class PlayerManager : MonoBehaviour
             else
                 addedRotationSpeed = ((movementSpeed * move - currentAttackSpeed) / maxSpeedFrame) + currentAttackSpeed;
             currentAttackSpeed = addedRotationSpeed;
-            currentMovementSpeed += move * acceleration;
+            currentMovementSpeed += move * acceleration * dragScale;
         }
         //Set movement speed to maximum if they exceed the maximum
         if (currentMovementSpeed > movementSpeed)
@@ -350,7 +367,7 @@ public class PlayerManager : MonoBehaviour
         }
         float cityDistance = 2f;
         cityBackground.transform.position = new Vector3(playerCamera.transform.position.x / cityDistance, playerCamera.transform.position.y / cityDistance, playerCamera.transform.position.z / cityDistance);
-        
+
     }
 
     #endregion
@@ -442,6 +459,12 @@ public class PlayerManager : MonoBehaviour
                 enemiesInRange[i].GetComponent<EnemyManager>().takeDamage(1);
             }
         }
+    }
+
+    public void takeDamage(int damage, int direction)
+    {
+        currentMovementSpeed = movementSpeed * direction;
+        GetComponent<Rigidbody2D>().linearVelocityY = 12f;
     }
 
     #endregion

@@ -37,10 +37,12 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] public GameObject enemy;
     [SerializeField] public GameObject deathPrefab;
     [SerializeField] public GameObject damageCounter;
-    private int damageDirection;
+    private int damageCounterDirection;
     private Animator animator;
 
     private GameObject player;
+    //To keep track of what direction the player should be thrown when dealing damage
+    private int facingDirection;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +51,7 @@ public class EnemyManager : MonoBehaviour
         health = baseHealth;
         blinkTimer = Random.Range(blinkTimerRange.x, blinkTimerRange.y);
         player = GameStats.getPlayer();
-        damageDirection = (int)Mathf.Floor(Random.Range(0, 2.9f));
+        damageCounterDirection = (int)Mathf.Floor(Random.Range(0, 2.9f));
 
         //Set up animator
         animator = GetComponent<Animator>();
@@ -144,6 +146,7 @@ public class EnemyManager : MonoBehaviour
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
             GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * playerDirection, 0);
             enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -playerDirection, enemy.transform.localScale.y, enemy.transform.localScale.z);
+            facingDirection = -playerDirection;
             animator.SetBool("IsWalking", true);
             return;
         }
@@ -184,12 +187,20 @@ public class EnemyManager : MonoBehaviour
             animator.SetTrigger("UpwardAttack");
             if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
             {
-                GameStats.getPlayer();
+                GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
             }
         }
         else
         {
             animator.SetTrigger("ForwardAttack");
+            if (leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == 1)
+            {
+                GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+            }
+            if (rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == -1)
+            {
+                GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+            }
         }
         inAttackChargeupMode = false;
         inAttackDelayMode = false; /* Redundancy */
@@ -200,8 +211,8 @@ public class EnemyManager : MonoBehaviour
     {
         health -= d;
         GameObject dam = Instantiate(damageCounter, new Vector2(transform.position.x, transform.position.y + (GetComponent<BoxCollider2D>().size.y + 0.5f)), new Quaternion());
-        dam.GetComponent<DamageCounter>().setupDamage(damageDirection);
-        damageDirection = damageDirection >= 2 ? 0 : damageDirection + 1;
+        dam.GetComponent<DamageCounter>().setupDamage(damageCounterDirection);
+        damageCounterDirection = damageCounterDirection >= 2 ? 0 : damageCounterDirection + 1;
         if (health <= 0)
         {
             Debug.Log("I died lol");
