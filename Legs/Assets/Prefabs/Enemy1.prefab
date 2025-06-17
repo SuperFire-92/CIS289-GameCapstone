@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4078169572333251533}
   - component: {fileID: 3637910818202044893}
   - component: {fileID: 6488284446292825322}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 4233064720126656860}
   - component: {fileID: 5161437543951311250}
   - component: {fileID: 7200030745558471976}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 3416643895902570212}
   - component: {fileID: 8004700134481345745}
   - component: {fileID: 2744908699078278349}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -236,13 +236,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc7e84a2fa8dcd408dbb667922387c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 0
-  speed: 0
-  blinkTimerRange: {x: 0, y: 0}
-  attackDelayRange: {x: 0, y: 0}
-  attackChargeup: 0
-  sideAttackBasic: 0
-  verticalAttackBasic: 0
+  baseHealth: 5
+  speed: 3
+  blinkTimerRange: {x: 1, y: 1}
+  attackDelayRange: {x: 1, y: 1}
+  attackChargeup: 1
+  sideAttackBasic: 1
+  verticalAttackBasic: 1
   leftTrigger: {fileID: 2617945176181871357}
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
@@ -293,7 +293,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 2203081886540173505}
   - component: {fileID: 1306858796258942785}
   - component: {fileID: 7620232640113124140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisionTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5131801970906617596}
   - component: {fileID: 7484533068213598035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 85662105399564738}
   - component: {fileID: 6349077811095698270}
   - component: {fileID: 2763944473369389980}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

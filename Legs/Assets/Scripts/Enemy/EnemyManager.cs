@@ -41,8 +41,10 @@ public class EnemyManager : MonoBehaviour
     private Animator animator;
 
     private GameObject player;
+    private GameObject battleZone;
     //To keep track of what direction the player should be thrown when dealing damage
     private int facingDirection;
+    private Vector2 spawnLocation;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,6 +58,8 @@ public class EnemyManager : MonoBehaviour
         //Set up animator
         animator = GetComponent<Animator>();
         animator.SetBool("IsWalking", false);
+
+        spawnLocation = transform.position;
     }
 
     // Update is called once per frame
@@ -68,6 +72,8 @@ public class EnemyManager : MonoBehaviour
     {
         enemyAI();
     }
+
+    #region AI
 
     //Code related to the movement and behavior of the enemy
     private void enemyAI()
@@ -121,6 +127,35 @@ public class EnemyManager : MonoBehaviour
             attack();
             return;
         }
+        //If the player is outside the battle zone, head back to the spawn location
+        if (!battleZone.GetComponent<BattleZone>().playerInside)
+        {
+            //If the enemy is not in the spawn location, walk towards it
+            playerFound = false;
+            if (spawnLocation.x - 0.2f > transform.position.x)
+            {
+                //Walk in that direction
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed, 0);
+                enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                facingDirection = -1;
+                animator.SetBool("IsWalking", true);
+                return;
+            }
+            if (spawnLocation.x + 0.2f < transform.position.x)
+            {
+                //Walk in that direction
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * -1, 0);
+                enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * 1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                facingDirection = 1;
+                animator.SetBool("IsWalking", true);
+                return;
+            }
+            animator.SetBool("IsWalking", false);
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            return;
+        }
         //When the player is in the vision range, walk in that direction
         //Lower priority, if anything above this has triggered, we do not need to worry about walking as the player is too close
         if (hasBlinked && !inAttackChargeupMode && !inAttackDelayMode && !playerInRange)
@@ -152,6 +187,9 @@ public class EnemyManager : MonoBehaviour
         }
         //IDLING
     }
+
+    #endregion
+    #region Attack
 
     private void chargeAttack(bool playerInRange)
     {
@@ -215,11 +253,16 @@ public class EnemyManager : MonoBehaviour
         damageCounterDirection = damageCounterDirection >= 2 ? 0 : damageCounterDirection + 1;
         if (health <= 0)
         {
-            Debug.Log("I died lol");
-            Instantiate(deathPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion());
+            GameObject dead = Instantiate(deathPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion());
+            battleZone.GetComponent<BattleZone>().removeEnemy(gameObject, dead);
             Destroy(gameObject);
         }
     }
 
-    
+    #endregion
+
+    public void setBattleZone(GameObject bz)
+    {
+        battleZone = bz;
+    }
 }
