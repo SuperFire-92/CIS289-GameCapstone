@@ -28,6 +28,8 @@ public class EnemyManager : MonoBehaviour
     [Header("Attacks")]
     [SerializeField] public bool sideAttackBasic;
     [SerializeField] public bool verticalAttackBasic;
+    [Tooltip("If the hammer attack is enabled, all other attacks will be disabled")]
+    [SerializeField] public bool hammerAttack;
 
     [Header("References")]
     [SerializeField] public GameObject leftTrigger;
@@ -53,6 +55,10 @@ public class EnemyManager : MonoBehaviour
         health = baseHealth;
         blinkTimer = Random.Range(blinkTimerRange.x, blinkTimerRange.y);
         player = GameStats.getPlayer();
+        if (player == null)
+        {
+            Debug.LogWarning("Player not found");
+        }
         damageCounterDirection = (int)Mathf.Floor(Random.Range(0, 2.9f));
 
         //Set up animator
@@ -60,6 +66,12 @@ public class EnemyManager : MonoBehaviour
         animator.SetBool("IsWalking", false);
 
         spawnLocation = transform.position;
+
+        //For debugging
+        if (battleZone == null)
+        {
+            Debug.LogWarning(this.name + " object missing BattleZone reference");
+        }
     }
 
     // Update is called once per frame
@@ -128,34 +140,38 @@ public class EnemyManager : MonoBehaviour
             return;
         }
         //If the player is outside the battle zone, head back to the spawn location
-        if (!battleZone.GetComponent<BattleZone>().playerInside)
+        if (battleZone != null)
         {
-            //If the enemy is not in the spawn location, walk towards it
-            playerFound = false;
-            if (spawnLocation.x - 0.2f > transform.position.x)
+            if (!battleZone.GetComponent<BattleZone>().playerInside)
             {
-                //Walk in that direction
-                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed, 0);
-                enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -1, enemy.transform.localScale.y, enemy.transform.localScale.z);
-                facingDirection = -1;
-                animator.SetBool("IsWalking", true);
+                //If the enemy is not in the spawn location, walk towards it
+                playerFound = false;
+                if (spawnLocation.x - 0.2f > transform.position.x)
+                {
+                    //Walk in that direction
+                    GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                    GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed, 0);
+                    enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                    facingDirection = -1;
+                    animator.SetBool("IsWalking", true);
+                    return;
+                }
+                if (spawnLocation.x + 0.2f < transform.position.x)
+                {
+                    //Walk in that direction
+                    GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                    GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * -1, 0);
+                    enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * 1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                    facingDirection = 1;
+                    animator.SetBool("IsWalking", true);
+                    return;
+                }
+                animator.SetBool("IsWalking", false);
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 return;
             }
-            if (spawnLocation.x + 0.2f < transform.position.x)
-            {
-                //Walk in that direction
-                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * -1, 0);
-                enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * 1, enemy.transform.localScale.y, enemy.transform.localScale.z);
-                facingDirection = 1;
-                animator.SetBool("IsWalking", true);
-                return;
-            }
-            animator.SetBool("IsWalking", false);
-            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            return;
         }
+        
         //When the player is in the vision range, walk in that direction
         //Lower priority, if anything above this has triggered, we do not need to worry about walking as the player is too close
         if (hasBlinked && !inAttackChargeupMode && !inAttackDelayMode && !playerInRange)
@@ -196,7 +212,12 @@ public class EnemyManager : MonoBehaviour
         if (playerInRange)
         {
             //Switch into chargeup animation
-            if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && verticalAttackBasic)
+            if (hammerAttack)
+            {
+                animator.SetTrigger("HammerCharge");
+
+            }
+            else if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && verticalAttackBasic)
             {
                 animator.SetTrigger("UpwardCharge");
                 attackingUp = true;
@@ -205,6 +226,14 @@ public class EnemyManager : MonoBehaviour
             {
                 animator.SetTrigger("ForwardCharge");
                 attackingUp = false;
+                //Find the direction the player is in, and face them
+                int playerDirection;
+                if (player.transform.position.x > transform.position.x)
+                    playerDirection = 1;
+                else
+                    playerDirection = -1;
+                enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -playerDirection, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                facingDirection = -playerDirection;
             }
             //Start counting down until the attack
             inAttackChargeupMode = true;
@@ -220,7 +249,8 @@ public class EnemyManager : MonoBehaviour
     private void attack()
     {
         //Deal damage to player and animate the attack
-        if (attackingUp)
+        //
+        if (attackingUp && !hammerAttack)
         {
             animator.SetTrigger("UpwardAttack");
             if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
@@ -230,14 +260,25 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger("ForwardAttack");
-            if (leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == 1)
+            if (hammerAttack)
             {
-                GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+                animator.SetTrigger("HammerAttack");
+                if (topTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true || leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true || rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
+                {
+                    GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(2, -facingDirection);
+                }
             }
-            if (rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == -1)
+            else
             {
-                GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+                animator.SetTrigger("ForwardAttack");
+                if (leftTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == 1)
+                {
+                    GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+                }
+                if (rightTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && facingDirection == -1)
+                {
+                    GameStats.getPlayer().GetComponent<PlayerManager>().takeDamage(1, -facingDirection);
+                }
             }
         }
         inAttackChargeupMode = false;
@@ -245,7 +286,7 @@ public class EnemyManager : MonoBehaviour
         return;
     }
 
-    public void takeDamage(int d)
+    public bool takeDamage(int d)
     {
         health -= d;
         GameObject dam = Instantiate(damageCounter, new Vector2(transform.position.x, transform.position.y + (GetComponent<BoxCollider2D>().size.y + 0.5f)), new Quaternion());
@@ -254,9 +295,12 @@ public class EnemyManager : MonoBehaviour
         if (health <= 0)
         {
             GameObject dead = Instantiate(deathPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), new Quaternion());
-            battleZone.GetComponent<BattleZone>().removeEnemy(gameObject, dead);
+            if (battleZone != null)
+                battleZone.GetComponent<BattleZone>().removeEnemy(gameObject, dead);
             Destroy(gameObject);
+            return true;
         }
+        return false;
     }
 
     #endregion

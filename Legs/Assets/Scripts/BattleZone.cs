@@ -53,10 +53,17 @@ public class BattleZone : MonoBehaviour
             currentSpawnTimer -= Time.deltaTime;
             if (currentSpawnTimer <= 0f && nextEnemyIndex < enemiesToSpawn.Length)
             {
-                for (int i = 0; i < spawnLocations.Length - currentEnemies.Count(); i++)
+                Debug.Log("Spawning Enemies, with " + currentEnemies.Count() + " enemies alive, spawning " + (spawnLocations.Length - currentEnemies.Count()) + " enemies");
+                //Store the number of enemies to spawn, as currentEnemies.Count() will increase as the loop progresses, which causes issues if we compare directly
+                int numOfEnemiesToSpawn = spawnLocations.Length - currentEnemies.Count();
+                for (int i = 0; i < numOfEnemiesToSpawn; i++)
                 {
                     if (nextEnemyIndex >= enemiesToSpawn.Length)
+                    {
+                        Debug.Log("WE'RE OUT OF ENEMIES TO SPAWN! IF THAT'S NOT TRUE, PANIC");
                         break;
+                    }
+                    Debug.Log("Spawning Enemy " + i);
                     spawnEnemy();
                 }
                 currentSpawnTimer = spawnTimer;

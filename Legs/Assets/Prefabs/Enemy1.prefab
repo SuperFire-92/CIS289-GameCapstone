@@ -236,13 +236,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc7e84a2fa8dcd408dbb667922387c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 5
+  baseHealth: 6
   speed: 3
   blinkTimerRange: {x: 1, y: 1}
   attackDelayRange: {x: 1, y: 1}
   attackChargeup: 1
   sideAttackBasic: 1
   verticalAttackBasic: 1
+  hammerAttack: 0
   leftTrigger: {fileID: 2617945176181871357}
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
@@ -426,7 +427,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 1}
-  m_Radius: 8
+  m_Radius: 12
 --- !u!1 &4632092926328707802
 GameObject:
   m_ObjectHideFlags: 0

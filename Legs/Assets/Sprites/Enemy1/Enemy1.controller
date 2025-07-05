@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1ForwardAttack
+  m_Name: EnemyForwardAttack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -34,7 +34,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1Idle
+  m_Name: EnemyIdle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -197,7 +197,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1UpwardAttack
+  m_Name: EnemyUpwardAttack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -276,7 +276,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1UpwardCharge
+  m_Name: EnemyUpwardCharge
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -303,7 +303,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1Walk
+  m_Name: EnemyWalk
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -352,7 +352,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy1ForwardCharge
+  m_Name: EnemyForwardCharge
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

@@ -11,8 +11,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] public InputActionAsset inputSystem;
 
     [Header("Player Stats")]
-    [SerializeField] public int health;
+    [Tooltip("The maximum speed at which the player can move")]
     [SerializeField] public float movementSpeed;
+    [Tooltip("The speed at which the player increases speed (Each fixed update, this number is added to the current movement speed)")]
     [SerializeField] public float acceleration;
     [SerializeField] public float jumpHeight;
     [SerializeField] public bool canJump;
@@ -24,9 +25,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Camera")]
     [SerializeField] public GameObject playerCamera;
     [SerializeField] public GameObject cityBackground;
+    [SerializeField] public GameObject cloudBackground;
     [SerializeField] public float cameraSize;
-    [Tooltip("Lowest X and Y and Highest X and Y limits of the camera on the main map")]
-    [SerializeField] public Vector4 cameraLimits;
 
     [Header("References")]
 
@@ -36,20 +36,31 @@ public class PlayerManager : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction attackAction;
+    private InputAction interactAction;
 
     private float move;
     private float attack;
-    //A number between -movementSpeed to movementSpeed
+    /// <summary>
+    /// A number between -movementSpeed to movementSpeed
+    /// </summary>
     private float currentMovementSpeed = 0;
-    //A number that matches movement speed but will increase (or decrease) if the player is not moving but instead attack
+    /// <summary>
+    /// A number that matches movement speed but will increase (or decrease) if the player is not moving but instead attack
+    /// </summary>
     private float currentAttackSpeed = 0;
-    //Keeps track of whether or not the player is at the maximum movement speed
+    /// <summary>
+    /// Keeps track of whether or not the player is at the maximum movement speed
+    /// </summary>
     private bool maxSpeed = false;
     [SerializeField] private float dragScale = 1;
     [SerializeField] private float damageTimer = 0;
     private float damageCooldown = 0;
+    private int health;
+    private GameObject interactObject;
 
-    //Gameobject array to store any enemy thats currently in attacking range
+    /// <summary>
+    /// Gameobject array to store any enemy thats currently in attacking range
+    /// </summary>
     [SerializeField] private GameObject[] enemiesInRange;
 
     #endregion
@@ -65,7 +76,9 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         //Declare GameStats variables before anything else accesses them
+        GameStats.setupVariables();
         GameStats.setPlayer(this.gameObject);
+        
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -77,6 +90,7 @@ public class PlayerManager : MonoBehaviour
         generateSwords(numOfSwords);
         //Set up variables
         enemiesInRange = new GameObject[0];
+        health = GameStats.getStartingPlayerHealth();
     }
 
     // Update is called once per frame
@@ -104,7 +118,13 @@ public class PlayerManager : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         //Attacking
         attackAction = InputSystem.actions.FindAction("Attack");
+        //Interacting
+        interactAction = InputSystem.actions.FindAction("Interact");
     }
+
+    #endregion
+
+    #region Player Movement
 
     private void jumpPlayer()
     {
@@ -136,7 +156,7 @@ public class PlayerManager : MonoBehaviour
         {
             player.transform.localScale = new Vector3(-Math.Abs(player.transform.localScale.x), player.transform.localScale.y, player.transform.localScale.z);
         }
-        
+
         //Find out if the player is in the air. If they are, we will reduce their movement speed and drag significantly
         //For this, we'll do the same check we do to test if the player can jump
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -333,6 +353,9 @@ public class PlayerManager : MonoBehaviour
         Vector3 topRight = cam.ViewportToWorldPoint(new Vector3(1, 1, cam.nearClipPlane));
         float highestX = topRight.x;
         float highestY = topRight.y;
+        //Get the cameralimits that are stored in GameStats
+        Vector4 cameraLimits = GameStats.getCameraLimits();
+
         //Now we do 4 comparisons to see if the camera needs to be snapped back
         // if (lowestX < cameraLimits.x || highestX > cameraLimits.z)
         // {
@@ -353,7 +376,7 @@ public class PlayerManager : MonoBehaviour
         else if (highestX > cameraLimits.z)
         {
             //Put the right of the camera to the limit
-            playerCamera.transform.position = new Vector3(cameraLimits.x - cam.orthographicSize * cam.aspect, playerCamera.transform.position.y, playerCamera.transform.position.z);
+            playerCamera.transform.position = new Vector3(cameraLimits.z - cam.orthographicSize * cam.aspect, playerCamera.transform.position.y, playerCamera.transform.position.z);
         }
         if (lowestY < cameraLimits.y)
         {
@@ -366,8 +389,9 @@ public class PlayerManager : MonoBehaviour
             playerCamera.transform.position = new Vector3(playerCamera.transform.position.x, cameraLimits.w - cam.orthographicSize, playerCamera.transform.position.z);
         }
         float cityDistance = 2f;
-        cityBackground.transform.position = new Vector3(playerCamera.transform.position.x / cityDistance, playerCamera.transform.position.y / cityDistance, playerCamera.transform.position.z / cityDistance);
-
+        float cloudDistance = 1.05f;
+        cityBackground.transform.position = new Vector3(playerCamera.transform.position.x / cityDistance, (playerCamera.transform.position.y + 0.75f * cityDistance * 3f) / (cityDistance * 3f), 0);
+        cloudBackground.transform.position = new Vector3(playerCamera.transform.position.x / cloudDistance, (playerCamera.transform.position.y + 7f * cloudDistance) / cloudDistance, 0);
     }
 
     #endregion
@@ -411,6 +435,7 @@ public class PlayerManager : MonoBehaviour
 
         //Draw the location of the camera boundries
         Gizmos.color = Color.blueViolet;
+        Vector4 cameraLimits = GameStats.getCameraLimits();
 
         Gizmos.DrawLine(new Vector3(cameraLimits.x, cameraLimits.y, 0), new Vector3(cameraLimits.x, cameraLimits.w));
         Gizmos.DrawLine(new Vector3(cameraLimits.x, cameraLimits.w, 0), new Vector3(cameraLimits.z, cameraLimits.w));
@@ -427,6 +452,8 @@ public class PlayerManager : MonoBehaviour
         GameObject[] tempArray = new GameObject[enemiesInRange.Length + 1];
         for (int i = 0; i < enemiesInRange.Length; i++)
         {
+            // if (enemiesInRange[i] == null)
+            //     continue;
             tempArray[i] = enemiesInRange[i];
         }
         tempArray[tempArray.Length - 1] = newEnemy;
@@ -438,13 +465,14 @@ public class PlayerManager : MonoBehaviour
         GameObject[] tempArray = new GameObject[enemiesInRange.Length - 1];
         for (int i = 0, j = 0; i < enemiesInRange.Length; i++)
         {
-            if (exitingEnemy == enemiesInRange[i])
+            if (exitingEnemy == enemiesInRange[i] || enemiesInRange[i] == null)
             {
                 continue;
             }
             else
             {
                 tempArray[j] = enemiesInRange[i];
+                j++;
             }
         }
         enemiesInRange = tempArray;
@@ -456,7 +484,14 @@ public class PlayerManager : MonoBehaviour
         {
             for (int i = 0; i < enemiesInRange.Length; i++)
             {
-                enemiesInRange[i].GetComponent<EnemyManager>().takeDamage(1);
+                // if (enemiesInRange[i] == null)
+                // {
+                //     continue;
+                // }
+                if (enemiesInRange[i].GetComponent<EnemyManager>().takeDamage(1))
+                {
+                    i--;
+                }
             }
         }
     }
@@ -465,6 +500,45 @@ public class PlayerManager : MonoBehaviour
     {
         currentMovementSpeed = movementSpeed * direction;
         GetComponent<Rigidbody2D>().linearVelocityY = 12f;
+    }
+
+    #endregion
+
+    #region Interactions
+
+    public void setInteractObject(GameObject interaction)
+    {
+        interactObject = interaction;
+    }
+
+    public void removeInteractObject(GameObject interaction)
+    {
+        if (interactObject == interaction)
+        {
+            interactObject = null;
+        }
+    }
+
+    /// <summary>
+    /// Handle all interaction inputs, and trigger gateways and dialogues
+    /// </summary>
+    public void interactPlayer()
+    {
+        if (interactAction.WasPressedThisFrame())
+        {
+            if (interactObject == null)
+            {
+                return;
+            }
+            if (interactObject.CompareTag("Gateway"))
+            {
+                //PERFORM TRANSITION TO NEXT ZONE
+            }
+            if (interactObject.CompareTag("Dialogue"))
+            {
+                //BEGIN DIALOGUE INTERACTION
+            }
+        }
     }
 
     #endregion

@@ -80,7 +80,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.5, y: 1}
+  m_Offset: {x: -0.5, y: 0.6}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -90,7 +90,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.6, y: 0.4}
   m_EdgeRadius: 0
 --- !u!1 &2754454848955321079
 GameObject:
@@ -172,7 +172,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: 1}
+  m_Offset: {x: 0.5, y: 0.6}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -182,7 +182,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.6, y: 0.4}
   m_EdgeRadius: 0
 --- !u!1 &3389987829648881555
 GameObject:
@@ -236,13 +236,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc7e84a2fa8dcd408dbb667922387c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 4
+  baseHealth: 6
   speed: 4
   blinkTimerRange: {x: 0.5, y: 1}
   attackDelayRange: {x: 0.8, y: 1}
   attackChargeup: 0.5
   sideAttackBasic: 1
   verticalAttackBasic: 0
+  hammerAttack: 0
   leftTrigger: {fileID: 2617945176181871357}
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
@@ -426,7 +427,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 1}
-  m_Radius: 8
+  m_Radius: 12
 --- !u!1 &4632092926328707802
 GameObject:
   m_ObjectHideFlags: 0
