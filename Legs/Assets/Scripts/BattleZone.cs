@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleZone : MonoBehaviour
@@ -12,6 +11,7 @@ public class BattleZone : MonoBehaviour
     [SerializeField] private GameObject[] enemiesToSpawn;
     [Tooltip("A list of locations where enemies can spawn within the BattleZone.\nThe maximum enemies at once is equal to the number of spawn locations.")]
     [SerializeField] private Vector2[] spawnLocations;
+    [SerializeField] private GameObject enemyElevatorOrDoor;
     //Store lists of enemies and dead enemies to be removed when the player leaves the area or dies.
     [System.Serializable]
     public struct CEnemies
@@ -21,9 +21,12 @@ public class BattleZone : MonoBehaviour
     }
     private List<CEnemies> currentEnemies = new();
     private List<GameObject> deadEnemies = new();
+    private List<GameObject> placedDoors = new();
     [SerializeField] public float spawnTimer;
+    [SerializeField] public int zone;
     float currentSpawnTimer;
     private int nextEnemyIndex = 0;
+    private bool zoneComplete;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +34,9 @@ public class BattleZone : MonoBehaviour
         playerInside = false;
         playerEntered = false;
         currentSpawnTimer = spawnTimer;
+        zoneComplete = false;
+        placeDoors();
+        GameStats.addBattleZone(gameObject);
     }
 
     // Update is called once per frame
@@ -48,26 +54,26 @@ public class BattleZone : MonoBehaviour
         //#3: When the player dies, the battle zone will destroy all living and dead enemies, and reset
         //back to it's original state.
         //#4: When the player kills the last enemy of the zone, it will unlock entry to the next zone.
-        if (playerInside)
+        if (playerInside && !zoneComplete)
         {
             currentSpawnTimer -= Time.deltaTime;
             if (currentSpawnTimer <= 0f && nextEnemyIndex < enemiesToSpawn.Length)
             {
-                Debug.Log("Spawning Enemies, with " + currentEnemies.Count() + " enemies alive, spawning " + (spawnLocations.Length - currentEnemies.Count()) + " enemies");
                 //Store the number of enemies to spawn, as currentEnemies.Count() will increase as the loop progresses, which causes issues if we compare directly
                 int numOfEnemiesToSpawn = spawnLocations.Length - currentEnemies.Count();
                 for (int i = 0; i < numOfEnemiesToSpawn; i++)
                 {
                     if (nextEnemyIndex >= enemiesToSpawn.Length)
                     {
-                        Debug.Log("WE'RE OUT OF ENEMIES TO SPAWN! IF THAT'S NOT TRUE, PANIC");
+                        zoneComplete = true;
                         break;
                     }
-                    Debug.Log("Spawning Enemy " + i);
                     spawnEnemy();
                 }
                 currentSpawnTimer = spawnTimer;
             }
+            if (nextEnemyIndex >= enemiesToSpawn.Length)
+                zoneComplete = true;
         }
     }
 
@@ -97,7 +103,7 @@ public class BattleZone : MonoBehaviour
             return;
         }
         //Another error check to ensure there is an enemy available to spawn
-        if (enemiesToSpawn[nextEnemyIndex] == null)
+        if (nextEnemyIndex >= enemiesToSpawn.Length)
         {
             Debug.LogWarning("No Enemy Available At Index " + nextEnemyIndex + " in " + name);
             return;
@@ -130,6 +136,7 @@ public class BattleZone : MonoBehaviour
         GameObject enemy = Instantiate( enemiesToSpawn[nextEnemyIndex],
                                         new Vector3(transform.position.x + spawnLocations[lowestSpawnLocation].x, transform.position.y + spawnLocations[lowestSpawnLocation].y, transform.position.z), new Quaternion());
         enemy.GetComponent<EnemyManager>().setBattleZone(gameObject);
+        enemy.GetComponent<EnemyManager>().setSpawnPosition(new Vector2(spawnLocations[lowestSpawnLocation].x + transform.position.x, spawnLocations[lowestSpawnLocation].y));
         CEnemies newEnemy = new()
         {
             enemy = enemy,
@@ -150,6 +157,10 @@ public class BattleZone : MonoBehaviour
                 deadEnemies.Add(deadEnemy);
             }
         }
+        if (currentEnemies.Count() <= 0 && zoneComplete == true)
+        {
+            GameStats.increasePlayerLevel();
+        }
     }
 
     public void removeEnemy(GameObject enemyToRemove)
@@ -160,6 +171,41 @@ public class BattleZone : MonoBehaviour
             {
                 currentEnemies.Remove(currentEnemies[i]);
             }
+        }
+        if (currentEnemies.Count() <= 0 && zoneComplete == true)
+        {
+            GameStats.increasePlayerLevel();
+        }
+    }
+
+    public void resetBattleZone()
+    {
+        //Remove all dead and alive enemies, reset all indexes to start
+        foreach (CEnemies enemy in currentEnemies)
+        {
+            Destroy(enemy.enemy);
+        }
+        currentEnemies = new();
+        foreach (GameObject enemy in deadEnemies)
+        {
+            Destroy(enemy);
+        }
+        deadEnemies = new();
+
+        playerInside = false;
+        playerEntered = false;
+        currentSpawnTimer = spawnTimer;
+        nextEnemyIndex = 0;
+        zoneComplete = false;
+    }
+
+    private void placeDoors()
+    {
+        for (int i = 0; i < spawnLocations.Length; i++)
+        {
+            GameObject door = Instantiate(enemyElevatorOrDoor);
+            door.transform.position = new Vector2(transform.position.x + spawnLocations[i].x, 1);
+            placedDoors.Add(door);
         }
     }
 

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -36,19 +35,21 @@ public class DialogueObject : MonoBehaviour
     private float waitingTime;
     private bool inPost = false;
 
-    private void resetDialogue()
+    public void resetDialogue()
     {
         dialogueTimer = 0f;
         currentDialogue = 0;
-        timeBetweenCharacters = 0.1f;
+        timeBetweenCharacters = 0.075f;
+        //timeBetweenCharacters = 0.01f;
         typingParagraph = false;
-        waitingTime = 12f;
+        waitingTime = 20f;
         text.GetComponent<TextMeshProUGUI>().text = "";
     }
 
     void Start()
     {
         resetDialogue();
+        GameStats.addDialogue(gameObject);
     }
 
     void Update()
@@ -58,8 +59,12 @@ public class DialogueObject : MonoBehaviour
         //after a certain amount of time has passed. Each dialogue will be stored in a string array called dialogues.
         //So for example, dialogues[0][5] would appear after the timer has reached 0.5f or beyond if the time between
         //each character is 0.1f.
-        if (trigger.GetComponent<EnemyTriggers>().getPlayerInRange() || typingParagraph)
+        if ((trigger.GetComponent<EnemyTriggers>().getPlayerInRange() || typingParagraph) && GameStats.isGamePaused() != 0f)
         {
+            if (!GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Play();
+            }
             textBox.SetActive(true);
             string[] contextDialogues;
             if (inPost)
@@ -73,13 +78,17 @@ public class DialogueObject : MonoBehaviour
                 int numOfCharacters = (int)Mathf.Floor(dialogueTimer / timeBetweenCharacters);
                 numOfCharacters = Mathf.Min(numOfCharacters, contextDialogues[currentDialogue].Length);
                 string textToDisplay = contextDialogues[currentDialogue].Substring(0, numOfCharacters);
-                if (textToDisplay.Contains('<'))
+                string holderText = textToDisplay;
+                int index = 0;
+                while (holderText.Contains('<'))
                 {
-                    int i = contextDialogues[currentDialogue].IndexOf('<', 0);
-                    int j = contextDialogues[currentDialogue].IndexOf('>', 0);
+                    int i = contextDialogues[currentDialogue].IndexOf('<', index);
+                    int j = contextDialogues[currentDialogue].IndexOf('>', index);
                     numOfCharacters += j - i;
                     numOfCharacters = Mathf.Min(numOfCharacters, contextDialogues[currentDialogue].Length);
                     textToDisplay = contextDialogues[currentDialogue].Substring(0, numOfCharacters);
+                    holderText = textToDisplay.Substring(j);
+                    index = j + 1;
                 }
                 if (dialogueTimer / timeBetweenCharacters > contextDialogues[currentDialogue].Length + waitingTime)
                 {
@@ -96,10 +105,27 @@ public class DialogueObject : MonoBehaviour
                 textBox.gameObject.SetActive(false);
             }
         }
-        else
+        else if (GameStats.isGamePaused() != 0f)
         {
+            if (GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Pause();
+            }
+            string[] contextDialogues;
+            if (inPost)
+                contextDialogues = postDialogue;
+            else
+                contextDialogues = dialogues;
+            if (currentDialogue >= contextDialogues.Length)
+            {
+                inPost = true;
+            }
             resetDialogue();
             textBox.SetActive(false);
+        }
+        else if (GameStats.isGamePaused() == 0f)
+        {
+            GetComponent<AudioSource>().Pause();
         }
     }
 

@@ -11,7 +11,7 @@ public class Blacksmith : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GetComponent<Animator>().speed = GameStats.isGamePaused(); 
     }
 
     void OnTriggerEnter2D(Collider2D collision)

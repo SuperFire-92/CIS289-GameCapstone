@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc7e84a2fa8dcd408dbb667922387c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 12
+  baseHealth: 15
   speed: 2.5
   blinkTimerRange: {x: 1, y: 2}
   attackDelayRange: {x: 1.5, y: 2}
@@ -244,6 +244,8 @@ MonoBehaviour:
   sideAttackBasic: 1
   verticalAttackBasic: 1
   hammerAttack: 0
+  isFish: 0
+  isOfficeFish: 0
   leftTrigger: {fileID: 2617945176181871357}
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
