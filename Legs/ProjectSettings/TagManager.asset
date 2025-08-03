@@ -8,6 +8,8 @@ TagManager:
   - Gateway
   - HUDButton
   - EndCutscene
+  - Undefined
+  - Light
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 

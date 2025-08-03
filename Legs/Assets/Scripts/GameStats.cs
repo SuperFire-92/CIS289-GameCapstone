@@ -37,6 +37,7 @@ public static class GameStats
     private static bool godMode = false;
     private const int GOD_MODE_SWORDS = 16;
     private const int GOD_MODE_HEALTH = 50;
+    private static bool gameStillStarting = false;
 
     //Set up or reset all initial variables for the game
     public static void setupVariables()
@@ -58,17 +59,17 @@ public static class GameStats
     /// </summary>
     public static void startGame()
     {
+        godMode = false;
+        inFinalZone = false;
+        playerLevel = 0;
+        currentZone = 0;
+        player.GetComponent<PlayerManager>().resetPlayer();
         foreach (GameObject gameObject in battleZones)
             gameObject.GetComponent<BattleZone>().resetBattleZone();
         foreach (GameObject gameObject in dialogues)
-            gameObject.GetComponent<DialogueObject>().resetDialogue();
-        playerLevel = 0;
-        currentZone = 0;
+            gameObject.GetComponent<DialogueObject>().resetDialogue(true);
         respawnPosition = listOfRespawnPositions[0];
         cameraLimits = listOfCameraLimits[0];
-        godMode = false;
-        inFinalZone = false;
-        player.GetComponent<PlayerManager>().resetPlayer();
         foreach (GameObject gameObject in cutsceneRemoveableObjects)
         {
             gameObject.SetActive(true);
@@ -77,7 +78,7 @@ public static class GameStats
         {
             gameObject.SetActive(false);
         }
-
+        gameStillStarting = true;
     }
 
 
@@ -281,5 +282,15 @@ public static class GameStats
         {
             gameObject.GetComponent<Animator>().speed = isGamePaused();
         }
+    }
+
+    public static void setGameStillStarting(bool isStarting)
+    {
+        gameStillStarting = isStarting;
+    }
+
+    public static bool getGameStillStarting()
+    {
+        return gameStillStarting;
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5561375355909814358}
   - component: {fileID: 2810608702256932778}
   - component: {fileID: 2404402968857083983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PositionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: -4553854232215457571}
   - component: {fileID: 4325680048152908190}
   - component: {fileID: 8682536301086526194}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerObjects
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -438,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5551445505602766372}
   - component: {fileID: 4366616206629930483}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 7141476538444013030}
   - component: {fileID: 9174345809506061638}
   - component: {fileID: 6293719047255189227}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: InteractionTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2075229586873595746}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 6407072247044868787}
   - component: {fileID: 3837899380239893179}
   - component: {fileID: 2972795913104110181}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DamageTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

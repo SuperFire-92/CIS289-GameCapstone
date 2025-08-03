@@ -270,7 +270,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -394,6 +394,7 @@ MonoBehaviour:
   postDialogue:
   - This is post dialogue.
   - This should only work once the main dialogue has finished.
+  finalCutsceneDialogue: 0
 --- !u!82 &6269588962016289318
 AudioSource:
   m_ObjectHideFlags: 0
@@ -404,8 +405,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e330c7be8c6a0bd409eac262dc818c49, type: 3}
-  m_Resource: {fileID: 8300000, guid: e330c7be8c6a0bd409eac262dc818c49, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4b81a8faf04d7ec4bbd438d08ca714c4, type: 3}
+  m_Resource: {fileID: 8300000, guid: 4b81a8faf04d7ec4bbd438d08ca714c4, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

@@ -226,7 +226,7 @@ MonoBehaviour:
   controlSymbolL: {fileID: 3930740439927579511}
   controlSymbolR: {fileID: 2233003882119583394}
   keySprite: {fileID: 21300000, guid: d32f20c15d80014469248e8d6e077f2c, type: 3}
-  gamepadSprite: {fileID: 21300000, guid: fd07e710bddb91e4f9f73ed8d2058d8e, type: 3}
+  gamepadSprite: {fileID: 21300000, guid: 3f068c137dbd5ad40a4d832a77d38136, type: 3}
   zoneForward: 0
   zoneBackward: 0
   finalZone: 0

@@ -22,11 +22,13 @@ public class BattleZone : MonoBehaviour
     private List<CEnemies> currentEnemies = new();
     private List<GameObject> deadEnemies = new();
     private List<GameObject> placedDoors = new();
+    private List<GameObject> placedLights = new();
     [SerializeField] public float spawnTimer;
     [SerializeField] public int zone;
     float currentSpawnTimer;
     private int nextEnemyIndex = 0;
     private bool zoneComplete;
+    private bool playerLevelIncreased = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -132,7 +134,6 @@ public class BattleZone : MonoBehaviour
             Debug.LogWarning("Lowest Spawn Location was greater than the number of spawn locations. Did you mean to call this?");
             return;
         }
-        Debug.Log(lowestSpawnLocation);
         GameObject enemy = Instantiate( enemiesToSpawn[nextEnemyIndex],
                                         new Vector3(transform.position.x + spawnLocations[lowestSpawnLocation].x, transform.position.y + spawnLocations[lowestSpawnLocation].y, transform.position.z), new Quaternion());
         enemy.GetComponent<EnemyManager>().setBattleZone(gameObject);
@@ -159,7 +160,15 @@ public class BattleZone : MonoBehaviour
         }
         if (currentEnemies.Count() <= 0 && zoneComplete == true)
         {
-            GameStats.increasePlayerLevel();
+            if (!playerLevelIncreased)
+            {
+                GameStats.increasePlayerLevel();
+                playerLevelIncreased = true;
+            }
+            foreach (GameObject gameObject in placedLights)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            }
         }
     }
 
@@ -174,7 +183,15 @@ public class BattleZone : MonoBehaviour
         }
         if (currentEnemies.Count() <= 0 && zoneComplete == true)
         {
-            GameStats.increasePlayerLevel();
+            if (!playerLevelIncreased)
+            {
+                GameStats.increasePlayerLevel();
+                playerLevelIncreased = true;
+            }
+            foreach (GameObject gameObject in placedLights)
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            }
         }
     }
 
@@ -192,11 +209,17 @@ public class BattleZone : MonoBehaviour
         }
         deadEnemies = new();
 
+        foreach (GameObject gameObject in placedLights)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+
         playerInside = false;
         playerEntered = false;
         currentSpawnTimer = spawnTimer;
         nextEnemyIndex = 0;
         zoneComplete = false;
+        playerLevelIncreased = false;
     }
 
     private void placeDoors()
@@ -206,6 +229,15 @@ public class BattleZone : MonoBehaviour
             GameObject door = Instantiate(enemyElevatorOrDoor);
             door.transform.position = new Vector2(transform.position.x + spawnLocations[i].x, 1);
             placedDoors.Add(door);
+            //Get the lights as well as the doors, for ease :)
+            SpriteRenderer[] spriteRenderers = door.GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+            {
+                if (spriteRenderer.gameObject.CompareTag("Light"))
+                {
+                    placedLights.Add(spriteRenderer.gameObject);
+                }
+            }
         }
     }
 
@@ -217,6 +249,11 @@ public class BattleZone : MonoBehaviour
             handlePlayerEntry();
             playerInside = true;
             playerEntered = true;
+            if (GameStats.isGodMode() && !playerLevelIncreased)
+            {
+                GameStats.increasePlayerLevel();
+                playerLevelIncreased = true;
+            }
         }
     }
 

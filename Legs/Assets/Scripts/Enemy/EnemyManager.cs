@@ -34,6 +34,11 @@ public class EnemyManager : MonoBehaviour
     [Tooltip("For the Office Fish. Will jump and smash on top of the player.")]
     [SerializeField] public bool isOfficeFish;
 
+    [Header("Sounds")]
+    [SerializeField] public AudioClip chargeAttackAudio;
+    [SerializeField] public AudioClip attackAudio;
+    [SerializeField] public AudioClip fishAudio;
+
     [Header("References")]
     [SerializeField] public GameObject leftTrigger;
     [SerializeField] public GameObject rightTrigger;
@@ -233,6 +238,54 @@ public class EnemyManager : MonoBehaviour
         else if (isFish)
         {
             //First, check to see if the player is in range
+            if (battleZone != null)
+            {
+                if (visionTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true && battleZone.GetComponent<BattleZone>().playerInside)
+                {
+                    GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                    //Now that we know the player is in range, bounce towards them
+                    //Check to see if the fish is on the ground. If it is, jump towards the player
+                    Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                    //Create a list of colliders so that the GetContacts function will work
+                    List<Collider2D> newlist = new List<Collider2D>();
+                    if (rb.linearVelocityY < 0.05f && rb.linearVelocityY > -0.05f && rb.GetContacts(newlist) > 0)
+                    {
+                        rb.linearVelocityY = speed;
+                        facingDirection = player.transform.position.x > transform.position.x ? 1 : -1;
+                        rb.linearVelocityX = speed * facingDirection;
+                        enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -facingDirection, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                    }
+                }
+                else
+                {
+                    //The player is out of range. Go back to starting position.
+                    if (transform.position.x < spawnLocation.x - 0.3f)
+                    {
+                        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                        List<Collider2D> newlist = new List<Collider2D>();
+                        if (rb.linearVelocityY < 0.05f && rb.linearVelocityY > -0.05f && rb.GetContacts(newlist) > 0)
+                            GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * 1, speed);
+                        enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                        facingDirection = -1;
+                        return;
+                    }
+                    if (transform.position.x > spawnLocation.x + 0.3f)
+                    {
+                        //Walk in that direction
+                        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+                        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                        List<Collider2D> newlist = new List<Collider2D>();
+                        if (rb.linearVelocityY < 0.05f && rb.linearVelocityY > -0.05f && rb.GetContacts(newlist) > 0)
+                            GetComponent<Rigidbody2D>().linearVelocity = new Vector2(speed * -1, speed);
+                        enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * 1, enemy.transform.localScale.y, enemy.transform.localScale.z);
+                        facingDirection = 1;
+                        return;
+                    }
+                    GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX;
+                    return;
+                }
+            }
             if (visionTrigger.GetComponent<EnemyTriggers>().getPlayerInRange() == true)
             {
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
@@ -241,14 +294,11 @@ public class EnemyManager : MonoBehaviour
                 Rigidbody2D rb = GetComponent<Rigidbody2D>();
                 //Create a list of colliders so that the GetContacts function will work
                 List<Collider2D> newlist = new List<Collider2D>();
-                Debug.Log("Fish " + name + " sees player.");
                 if (rb.linearVelocityY < 0.05f && rb.linearVelocityY > -0.05f && rb.GetContacts(newlist) > 0)
                 {
-                    Debug.Log("Fish " + name + " launching at " + speed * facingDirection + ".");
                     rb.linearVelocityY = speed;
                     facingDirection = player.transform.position.x > transform.position.x ? 1 : -1;
                     rb.linearVelocityX = speed * facingDirection;
-                    Debug.Log("Fish " + name + " launching at " + speed * facingDirection + ".");
                     enemy.transform.localScale = new Vector3(Mathf.Abs(enemy.transform.localScale.x) * -facingDirection, enemy.transform.localScale.y, enemy.transform.localScale.z);
                 }
             }
@@ -279,6 +329,7 @@ public class EnemyManager : MonoBehaviour
                     return;
                 }
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX;
+                return;
             }
         }
         //If the enemy is an office fish, it will leap in the air and smash down on the player.
@@ -342,7 +393,6 @@ public class EnemyManager : MonoBehaviour
             {
                 //Here we need to calculate the fish's position based on the following formula:
                 //positionRelativeToStart = (targetPosition / (totalTime^(1/4))) * ((facingDirection * currentTimer)^(1/4))
-                Debug.Log("officeFishStartCoordinates: " + officeFishStartCoordinates + "  officeFishJumpLocalCoordinates: " + officeFishJumpLocalCoordinates + "  officeFishTimer: " + officeFishTimer + "  facingDirection: " + facingDirection);
                 transform.position = new Vector2(
                     officeFishStartCoordinates.x - (officeFishJumpLocalCoordinates.x / Mathf.Pow(OFFICE_FISH_TIMER, 1f / 2f) * -1 * Mathf.Pow(OFFICE_FISH_TIMER - officeFishTimer, 1f / 2f)),
                     officeFishStartCoordinates.y - (officeFishJumpLocalCoordinates.y / Mathf.Pow(OFFICE_FISH_TIMER, 1f / 4f) * -1 * Mathf.Pow(OFFICE_FISH_TIMER - officeFishTimer, 1f / 4f)));
@@ -364,6 +414,8 @@ public class EnemyManager : MonoBehaviour
                 officeFishStartCoordinates = transform.position;
                 officeFishTimer = OFFICE_FISH_TIMER;
                 animator.SetTrigger("Jump");
+                GetComponent<AudioSource>().clip = fishAudio;
+                GetComponent<AudioSource>().Play();
                 if (facingDirection < 0)
                 {
                     //We are facing left. Jump left.
@@ -465,6 +517,8 @@ public class EnemyManager : MonoBehaviour
             inAttackChargeupMode = true;
             inAttackDelayMode = false;
             attackChargeupTimer = attackChargeup;
+            GetComponent<AudioSource>().clip = chargeAttackAudio;
+            GetComponent<AudioSource>().Play();
             return;
         }
         //If the player has left the range, switch out of delay mode without attacking
@@ -507,6 +561,8 @@ public class EnemyManager : MonoBehaviour
                 }
             }
         }
+        GetComponent<AudioSource>().clip = attackAudio;
+        GetComponent<AudioSource>().Play();
         inAttackChargeupMode = false;
         inAttackDelayMode = false; /* Redundancy */
         return;

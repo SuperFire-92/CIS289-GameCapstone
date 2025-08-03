@@ -13,10 +13,12 @@ public class Hud : MonoBehaviour
     [SerializeField] private GameObject menuStart;
     [SerializeField] private GameObject menuQuit;
     [SerializeField] private GameObject menuLogo;
+    [SerializeField] private GameObject menuCredits;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject pauseResume;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject pauseGodMode;
+    [SerializeField] private GameObject controllerOrMouse;
     [SerializeField] private GameObject credits;
     [SerializeField] private GameObject mouse;
 
@@ -39,7 +41,7 @@ public class Hud : MonoBehaviour
     void Start()
     {
         inGameHud = new GameObject[] { healthBack, health, healthText };
-        menuHud = new GameObject[] { menuPanel, menuStart, menuQuit, menuLogo };
+        menuHud = new GameObject[] { menuPanel, menuStart, menuQuit, menuLogo, menuCredits };
         pauseHud = new GameObject[] { pausePanel, pauseResume, pauseMenu, pauseGodMode};
         creditsHud = new GameObject[] { credits };
         curGameMode = -1;
@@ -54,6 +56,7 @@ public class Hud : MonoBehaviour
         {
             curGameMode = GameStats.getGameMode();
             mouse.SetActive(curGameMode == 0 || curGameMode == 2);
+            controllerOrMouse.SetActive(curGameMode == 0 || curGameMode == 2);
             //The gamemode has just changed. Set the activeness of each related
             //canvas object that needs to be swapped
             foreach (GameObject gameObject in menuHud)
@@ -68,6 +71,8 @@ public class Hud : MonoBehaviour
             {
                 gameObject.SetActive(curGameMode == 2);
             }
+            //Update the godmode button to be up to date
+            pauseGodMode.GetComponent<HudButtons>().clickGodMode();
             foreach (GameObject gameObject in creditsHud)
             {
                 gameObject.SetActive(curGameMode == 4);
@@ -92,6 +97,7 @@ public class Hud : MonoBehaviour
     private void updateMenuDisplay()
     {
         moveMouse();
+        controllerOrMouse.GetComponent<TextMeshProUGUI>().text = GameStats.getControlScheme() == "keyboard&mouse" ? "<sprite=8> FOR CONTROLLER" : "LEFT MOUSE FOR MOUSE";
     }
 
     private void updateHealthDisplay()
@@ -104,6 +110,7 @@ public class Hud : MonoBehaviour
     private void updatePauseDisplay()
     {
         moveMouse();
+        controllerOrMouse.GetComponent<TextMeshProUGUI>().text = GameStats.getControlScheme() == "keyboard&mouse" ? "<sprite=8> FOR CONTROLLER" : "LEFT MOUSE FOR MOUSE";
     }
 
     private void moveMouse()
@@ -115,7 +122,26 @@ public class Hud : MonoBehaviour
         {
             Vector2 move = hudMove.ReadValue<Vector2>();
             if (move.x < -0.1f || move.x > 0.1f || move.y < -0.1f || move.y > 0.1f)
-                mouse.transform.position = new Vector2(mouse.transform.position.x + move.x * Time.deltaTime * 300, mouse.transform.position.y + move.y * Time.deltaTime * 300);
+            {
+                mouse.transform.position = new Vector2(mouse.transform.position.x + move.x * Time.deltaTime * 600, mouse.transform.position.y + move.y * Time.deltaTime * 600);
+                if (mouse.transform.position.x > transform.position.x + (GetComponent<RectTransform>().rect.width / 2))
+                {
+                    mouse.transform.position = new Vector2(transform.position.x + (GetComponent<RectTransform>().rect.width / 2), mouse.transform.position.y);
+                }
+                else if (mouse.transform.position.x < transform.position.x - (GetComponent<RectTransform>().rect.width / 2))
+                {
+                    mouse.transform.position = new Vector2(transform.position.x - (GetComponent<RectTransform>().rect.width / 2), mouse.transform.position.y);
+                }
+                if (mouse.transform.position.y > transform.position.y + (GetComponent<RectTransform>().rect.height / 2))
+                {
+                    mouse.transform.position = new Vector2(mouse.transform.position.x, transform.position.y + (GetComponent<RectTransform>().rect.height / 2));
+                }
+                else if (mouse.transform.position.y < transform.position.y - (GetComponent<RectTransform>().rect.height / 2))
+                {
+                    mouse.transform.position = new Vector2(mouse.transform.position.x, transform.position.y - (GetComponent<RectTransform>().rect.height / 2));
+                }
+            }
+                mouse.transform.position = new Vector2(mouse.transform.position.x + move.x * Time.deltaTime * 600, mouse.transform.position.y + move.y * Time.deltaTime * 600);
         }
 
         //Check to see if a button on the menu was pressed, and if it was, perform that button's action

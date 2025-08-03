@@ -247,6 +247,9 @@ MonoBehaviour:
   hammerAttack: 0
   isFish: 0
   isOfficeFish: 0
+  chargeAttackAudio: {fileID: 8300000, guid: 3178a3636bdd88947873bbf408bd8bdc, type: 3}
+  attackAudio: {fileID: 8300000, guid: d3f74b37b4cdf3e4c90208afb668eebe, type: 3}
+  fishAudio: {fileID: 8300000, guid: 3a29466a298f8a9488a2f2a79c6e50cd, type: 3}
   leftTrigger: {fileID: 2617945176181871357}
   rightTrigger: {fileID: 2754454848955321079}
   topTrigger: {fileID: 8169068300284464415}
@@ -361,7 +364,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

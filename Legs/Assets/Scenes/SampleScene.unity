@@ -640,6 +640,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276859210}
   m_CullTransparentMesh: 1
+--- !u!1 &277904959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 277904960}
+  - component: {fileID: 277904962}
+  - component: {fileID: 277904961}
+  m_Layer: 5
+  m_Name: MenuCredits
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &277904960
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277904959}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1305322653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 128, y: 32}
+  m_SizeDelta: {x: 256, y: 64}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &277904961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277904959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 7480f46dea026a9419d4e664396f3ba7, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &277904962
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277904959}
+  m_CullTransparentMesh: 1
 --- !u!1 &334769601
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,11 +808,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[1]'
-      value: This building behind me has a SPLICER machine.
+      value: This building behind me has some sort of machine.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[2]'
-      value: Let's you manipulate DNA in organic creatures.
+      value: It let's you manipulate DNA in organic creatures.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[3]'
@@ -765,11 +840,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'postDialogue.Array.data[0]'
-      value: Paradise is right after this.
+      value: Paradise is just one building ahead.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'postDialogue.Array.data[1]'
-      value: You'll get to bathe in the sunlight of your own personal office.
+      value: You're gonna have your own personal office!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'postDialogue.Array.data[2]'
@@ -1301,7 +1376,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: dialogues.Array.size
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[0]'
@@ -1313,23 +1388,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[2]'
-      value: Also, you should be able to jump a little higher now.
-      objectReference: {fileID: 0}
-    - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
-      propertyPath: 'dialogues.Array.data[3]'
-      value: That way you can get over those tall guys.
-      objectReference: {fileID: 0}
-    - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
-      propertyPath: 'dialogues.Array.data[4]'
       value: Seems like your coworkers invested in some armor.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
-      propertyPath: 'dialogues.Array.data[5]'
+      propertyPath: 'dialogues.Array.data[3]'
       value: Might be a little harder to, erm, "get past them".
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
-      propertyPath: 'dialogues.Array.data[6]'
+      propertyPath: 'dialogues.Array.data[4]'
       value: Good luck!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
+      propertyPath: 'dialogues.Array.data[5]'
+      value: Also, you should be able to jump a little higher now.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
+      propertyPath: 'dialogues.Array.data[6]'
+      value: That way you can get over those tall guys.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[7]'
@@ -3024,7 +3099,7 @@ PrefabInstance:
       objectReference: {fileID: 3389987829648881555, guid: 3730fca47c2b61f44a058f8dcf38267c, type: 3}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[0].x
-      value: -25
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[1].x
@@ -3036,7 +3111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[4].x
-      value: 25
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3451,47 +3526,51 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: dialogues.Array.size
-      value: 22
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
+      propertyPath: finalCutsceneDialogue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[0]'
-      value: YOU!
+      value: YOU! What do you think you're doing??
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[1]'
-      value: What do you think you're doing???
+      value: You just MURDERED so many people!!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[2]'
-      value: H.R. is LIVID!!
+      value: The police have been called, they'll be here soon.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[3]'
-      value: Do you know what you just did???
+      value: I have never witnessed something so horrible.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[4]'
-      value: You just MURDERED DOZENS OF PEOPLE!!
+      value: You and that blacksmith!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[5]'
-      value: Those were your CO-WORKERS!!
+      value: You make me sick!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[6]'
-      value: The police are on their way.
+      value: Who even was she!?
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[7]'
-      value: What are we going to do??
+      value: She doesn't work here!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[8]'
-      value: Their families are going to be DEVASTATED!
+      value: ...
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[9]'
-      value: Why would you do this?? WHY??
+      value: How did you even turn your legs into swords??
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: postDialogue.Array.size
@@ -3499,7 +3578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[10]'
-      value: How did you even turn your legs into swords??
+      value: What kind of surgeon would do that??
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[11]'
@@ -3628,6 +3707,10 @@ PrefabInstance:
     - target: {fileID: 6010086402267543594, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6269588962016289318, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
+      propertyPath: Priority
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 7369120116148548394, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: m_Name
@@ -4114,12 +4197,14 @@ RectTransform:
   - {fileID: 1697771060}
   - {fileID: 804785980}
   - {fileID: 593851214}
+  - {fileID: 277904960}
   - {fileID: 1512430137}
   - {fileID: 1389315004}
   - {fileID: 1321489575}
   - {fileID: 2134108997}
   - {fileID: 1422185253}
   - {fileID: 272359476}
+  - {fileID: 1817669128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4147,10 +4232,12 @@ MonoBehaviour:
   menuStart: {fileID: 1697771059}
   menuQuit: {fileID: 804785979}
   menuLogo: {fileID: 593851213}
+  menuCredits: {fileID: 277904959}
   pausePanel: {fileID: 1512430136}
   pauseResume: {fileID: 1389315003}
   pauseMenu: {fileID: 1321489574}
   pauseGodMode: {fileID: 2134108996}
+  controllerOrMouse: {fileID: 1817669127}
   credits: {fileID: 924713588}
   mouse: {fileID: 1422185250}
 --- !u!1 &1321489574
@@ -4760,7 +4847,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: dialogues.Array.size
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[0]'
@@ -4792,15 +4879,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[7]'
-      value: Plus there were some members of upper management
+      value: And some managers were there too.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[8]'
-      value: Can't wait to see what they contribute...
+      value: They seem really weak, so they should be easy.
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[9]'
-      value: ......
+      value: Good luck!
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: postDialogue.Array.size
@@ -4808,7 +4895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'dialogues.Array.data[10]'
-      value: Good luck!
+      value: ......
       objectReference: {fileID: 0}
     - target: {fileID: 3191428411189876784, guid: e17fb91fc3d5bd640b8de520d6bdec0f, type: 3}
       propertyPath: 'postDialogue.Array.data[0]'
@@ -5330,6 +5417,144 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786150691}
   m_CullTransparentMesh: 1
+--- !u!1 &1817669127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1817669128}
+  - component: {fileID: 1817669130}
+  - component: {fileID: 1817669129}
+  m_Layer: 5
+  m_Name: ControllerOrMouse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1817669128
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817669127}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1305322653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -259.09766, y: -21.562012}
+  m_SizeDelta: {x: 518.1953, y: 40.876}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1817669129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817669127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: '<sprite=8> FOR CONTROLLER
+
+    LEFT MOUSE FOR MOUSE'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4284326342
+  m_fontColor: {r: 0.7764706, g: 0.6313726, b: 0.3647059, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 1
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1817669130
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817669127}
+  m_CullTransparentMesh: 1
 --- !u!1 &1820734593
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,11 +5715,11 @@ PrefabInstance:
       objectReference: {fileID: 3389987829648881555, guid: e2a9957a308da7c498b5e114d8ae7e39, type: 3}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[0].x
-      value: -20
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[2].x
-      value: 20
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6939,7 +7164,7 @@ PrefabInstance:
       objectReference: {fileID: 3389987829648881555, guid: eda81f4de186edc4893b7aa7db96bf42, type: 3}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[0].x
-      value: -15
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[0].y
@@ -6947,15 +7172,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[1].x
-      value: -5
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[2].x
-      value: 5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 2800526052751574460, guid: 62e5eb3bd3aa1e84dbdc80d29e40079a, type: 3}
       propertyPath: spawnLocations.Array.data[3].x
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

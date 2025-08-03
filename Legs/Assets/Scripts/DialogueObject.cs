@@ -26,6 +26,7 @@ public class DialogueObject : MonoBehaviour
     [SerializeField] private string[] dialogues;
     [Tooltip("This will be read off after the player finishes the original dialogue\nGood for restating important aspects, like controls")]
     [SerializeField] private string[] postDialogue;
+    [SerializeField] private bool finalCutsceneDialogue;
 
 
     private float dialogueTimer;
@@ -35,20 +36,22 @@ public class DialogueObject : MonoBehaviour
     private float waitingTime;
     private bool inPost = false;
 
-    public void resetDialogue()
+    public void resetDialogue(bool fullReset)
     {
         dialogueTimer = 0f;
         currentDialogue = 0;
-        timeBetweenCharacters = 0.075f;
+        timeBetweenCharacters = 0.045f;
         //timeBetweenCharacters = 0.01f;
         typingParagraph = false;
-        waitingTime = 20f;
+        waitingTime = 36f;
         text.GetComponent<TextMeshProUGUI>().text = "";
+        if (fullReset)
+            inPost = false;
     }
 
     void Start()
     {
-        resetDialogue();
+        resetDialogue(false);
         GameStats.addDialogue(gameObject);
     }
 
@@ -59,7 +62,7 @@ public class DialogueObject : MonoBehaviour
         //after a certain amount of time has passed. Each dialogue will be stored in a string array called dialogues.
         //So for example, dialogues[0][5] would appear after the timer has reached 0.5f or beyond if the time between
         //each character is 0.1f.
-        if ((trigger.GetComponent<EnemyTriggers>().getPlayerInRange() || typingParagraph) && GameStats.isGamePaused() != 0f)
+        if ((trigger.GetComponent<EnemyTriggers>().getPlayerInRange() || typingParagraph) && GameStats.isGamePaused() != 0f && !GameStats.getGameStillStarting())
         {
             if (!GetComponent<AudioSource>().isPlaying)
             {
@@ -73,6 +76,8 @@ public class DialogueObject : MonoBehaviour
                 contextDialogues = dialogues;
             if (currentDialogue < contextDialogues.Length)
             {
+                if (finalCutsceneDialogue)
+                    GetComponent<AudioSource>().volume = (contextDialogues.Length - (float)currentDialogue) / contextDialogues.Length;
                 typingParagraph = true;
                 dialogueTimer += Time.deltaTime;
                 int numOfCharacters = (int)Mathf.Floor(dialogueTimer / timeBetweenCharacters);
@@ -103,6 +108,7 @@ public class DialogueObject : MonoBehaviour
             {
                 inPost = true;
                 textBox.gameObject.SetActive(false);
+                GetComponent<AudioSource>().Pause();
             }
         }
         else if (GameStats.isGamePaused() != 0f)
@@ -120,7 +126,7 @@ public class DialogueObject : MonoBehaviour
             {
                 inPost = true;
             }
-            resetDialogue();
+            resetDialogue(false);
             textBox.SetActive(false);
         }
         else if (GameStats.isGamePaused() == 0f)

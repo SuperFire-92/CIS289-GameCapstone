@@ -112,6 +112,12 @@ public class PlayerManager : MonoBehaviour
     private float finalCutsceneEndingSize = 160;
     private float finalCutsceneTimer;
     private const float CAMERA_SIZE = 7.5f;
+    private Color cameraBackgroundBlue = new Color(0.2967693f, 0.5187032f, 0.5377358f);
+    /// <summary>
+    /// Prevent the first jump control when the game starts.
+    /// Makes sure the player isn't jumping when entering the game from the main menu.
+    /// </summary>
+    private bool gameStillStarting = false;
 
     public void resetPlayer()
     {
@@ -125,6 +131,8 @@ public class PlayerManager : MonoBehaviour
         currentAttackSpeed = 0;
         inFinalCutscene = false;
         playerCamera.GetComponent<Camera>().orthographicSize = CAMERA_SIZE;
+        playerCamera.GetComponent<Camera>().backgroundColor = cameraBackgroundBlue;
+        gameStillStarting = true;
     }
 
     #endregion
@@ -157,6 +165,7 @@ public class PlayerManager : MonoBehaviour
         //Set up variables
         enemiesInRange = new GameObject[0];
         health = GameStats.isGodMode() ? GameStats.getGodModeHealth() : GameStats.getStartingPlayerHealth();
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -171,9 +180,14 @@ public class PlayerManager : MonoBehaviour
         {
             jumpPlayer();
             interactPlayer();
-            pauseGame();
-            killPlayer();
+            checkPauseGame();
+            
         }
+        else if (GameStats.isGamePaused() == 0f && GameStats.getGameMode() == 2f && !inFinalCutscene)
+        {
+            checkUnpauseGame();
+        }
+        killPlayer();
         moveZones();
         checkScheme();
     }
@@ -186,15 +200,15 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         if (GameStats.isGamePaused() != 0f)
-            {
-                GetComponent<Rigidbody2D>().gravityScale = 2;
-                movePlayer();
-            }
-            else
-            {
-                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, 0f);
-                GetComponent<Rigidbody2D>().gravityScale = 0;
-            }
+        {
+            GetComponent<Rigidbody2D>().gravityScale = 2;
+            movePlayer();
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0f, 0f);
+            GetComponent<Rigidbody2D>().gravityScale = 0;
+        }
         moveCamera();
 
     }
@@ -247,6 +261,12 @@ public class PlayerManager : MonoBehaviour
         //Jump!
         if (jumpAction.WasPressedThisFrame())
         {
+            if (gameStillStarting)
+            {
+                gameStillStarting = false;
+                GameStats.setGameStillStarting(false);
+                return;
+            }
             //Find out if the player should be able to jump
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             //Create a list of colliders so that the GetContacts function will work
@@ -263,11 +283,17 @@ public class PlayerManager : MonoBehaviour
         move = moveAction.ReadValue<float>();
         attack = attackAction.ReadValue<float>();
 
-        if (inFinalCutscene)
+        if (move > 0.1f || move < -0.1f)
         {
-            move = 0;
-            attack = 0;
+            gameStillStarting = false;
+            GameStats.setGameStillStarting(false);
         }
+
+        if (inFinalCutscene)
+            {
+                move = 0;
+                attack = 0;
+            }
 
         //Switch which direction the player is facing
         if (move > 0.1f)
@@ -819,13 +845,22 @@ public class PlayerManager : MonoBehaviour
 
     #region Pause
 
-    public void pauseGame()
+    public void checkPauseGame()
     {
         if (pauseAction.WasPressedThisFrame())
         {
             GameStats.setGameMode(2);
             storedFallSpeed = GetComponent<Rigidbody2D>().linearVelocityY;
             storedGravity = GetComponent<Rigidbody2D>().gravityScale;
+        }
+    }
+
+    public void checkUnpauseGame()
+    {
+        if (pauseAction.WasPressedThisFrame())
+        {
+            GameStats.setGameMode(1);
+            unpauseGame();
         }
     }
 
@@ -868,7 +903,6 @@ public class PlayerManager : MonoBehaviour
             //k is the full timer's length, and x is the timer (starting at 0, ending at the full timer's length).
             float currentOffsetX = -((finalCutsceneEndingPos.x - finalCutsceneStartingPos.x) / 2) * MathF.Cos(Mathf.PI * (FINAL_CUTSCENE_LENGTH - finalCutsceneTimer) / FINAL_CUTSCENE_LENGTH) + ((finalCutsceneEndingPos.x - finalCutsceneStartingPos.x) / 2);
             float currentOffsetY = -((finalCutsceneEndingPos.y - finalCutsceneStartingPos.y) / 2) * MathF.Cos(Mathf.PI * (FINAL_CUTSCENE_LENGTH - finalCutsceneTimer) / FINAL_CUTSCENE_LENGTH) + ((finalCutsceneEndingPos.y - finalCutsceneStartingPos.y) / 2);
-            Debug.Log("This frame's offset: " + currentOffsetX + " " + currentOffsetY);
             playerCamera.transform.position = new Vector3(finalCutsceneStartingPos.x + currentOffsetX, finalCutsceneStartingPos.y + currentOffsetY, -12.5f);
 
             //Along with that, we're slowly going to increase the size of the camera. We are going to increase it to a specified width
